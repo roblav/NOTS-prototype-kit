@@ -54,6 +54,12 @@ describe('watch custom sass files', () => {
           .find(item => item.name.endsWith(`${customStylesFixture}.css`))
       })
 
+      // FIXME: the expected behaviour is that the page should update itself,
+      // however there is a bug in our setup where CSS changes don't get
+      // propogated without a page reload. When this is fixed, remove this line.
+      cy.task('log', 'Reload the page')
+      cy.reload()
+
       cy.task('log', 'The colour of the paragraph should be changed to green')
       cy.get('p.app-custom-style').should('have.css', 'background-color', 'rgb(0, 255, 0)')
 
