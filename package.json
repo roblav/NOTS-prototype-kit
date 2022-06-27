@@ -1,7 +1,7 @@
 {
   "name": "govuk-prototype-kit",
   "description": "Rapidly create HTML prototypes of GOV.UK services",
-  "version": "12.1.1",
+  "version": "1.0.0",
   "private": true,
   "engines": {
     "node": ">=12.0.0 <17.0.0"
@@ -20,6 +20,7 @@
     "test": "jest && npm run lint"
   },
   "dependencies": {
+    "@dwp/dwp-frontend": "^2.2.0",
     "acorn": "^8.5.0",
     "ansi-colors": "^4.1.1",
     "body-parser": "^1.14.1",
@@ -39,12 +40,14 @@
     "govuk-elements-sass": "^3.1.3",
     "govuk-frontend": "^4.1.0",
     "gray-matter": "^4.0.3",
+    "heroku": "^7.60.2",
     "inquirer": "^8.2.0",
     "lodash": "^4.17.21",
     "marked": "^4.0.10",
     "nodemon": "^2.0.15",
     "notifications-node-client": "^5.1.0",
     "nunjucks": "^3.2.1",
+    "pdfjs-dist": "^2.14.305",
     "portscanner": "^2.1.1",
     "require-dir": "^1.0.0",
     "sass": "^1.49.10",
@@ -52,16 +55,14 @@
     "universal-analytics": "^0.5.3",
     "uuid": "^8.3.2"
   },
-  "devDependencies": {
+  "optionalDependencies": {
     "cypress": "^9.6.0",
     "eslint-plugin-cypress": "^2.12.1",
     "glob": "^7.1.4",
-    "jest": "^28.1.1",
-    "proper-lockfile": "^4.1.2",
+    "jest": "^27.3.1",
     "standard": "^14.3.3",
     "start-server-and-test": "^1.14.0",
     "supertest": "^6.2.3",
-    "tar": "^6.1.11",
     "wait-on": "^6.0.1"
   },
   "standard": {
@@ -73,12 +74,10 @@
     }
   },
   "jest": {
-    "globalSetup": "<rootDir>/__tests__/util/globalSetup.js",
     "testPathIgnorePatterns": [
-      "__tests__/util/",
+      "__tests__/spec/utils.js",
       "/node_modules/",
       "/tmp/"
-    ],
-    "testTimeout": 30000
+    ]
   }
 }

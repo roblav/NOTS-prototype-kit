@@ -1,0 +1,87 @@
+{
+  "templateId": "2",
+  "templateName": "IPC147 Statement of Benefit",
+  "templateDescription": "Statement of Benefits made",
+  "language": ["en"],
+  "templateVersion": 1.0,
+  "isAvailable": true,
+  "channels": [
+    {
+      "channel": "email",
+      "policyOverride": false
+    }
+  ],
+  "placeholders": [
+    {
+      "id": "2",
+      "name": "custTitle",
+      "type": "personTitle",
+      "title": "Title"
+    },
+    {
+      "id": "3",
+      "name": "custFirstName",
+      "type": "freetext 100",
+      "title": "First name"
+    },
+    {
+      "id": "4",
+      "name": "custSurname",
+      "type": "freetext 100",
+      "title": "Last name"
+    },
+    {
+      "id": "5",
+      "name": "arrayText1",
+      "type": "freetext 100",
+      "title": "Benefit name"
+    },
+    {
+      "id": "6",
+      "name": "arrayDate1",
+      "type": "date",
+      "title": "From date",
+      "hint": "For example, dd/mm/yyyy, dd/mm/yy, today"
+    },
+    {
+      "id": "7",
+      "name": "arrayDate2",
+      "type": "date",
+      "title": "To date",
+      "hint": "For example, dd/mm/yyyy, dd/mm/yy, today"
+    },
+    {
+      "id": "8",
+      "name": "arrayNumber1",
+      "type": "whole number",
+      "title": "Number of weeks"
+    },
+    {
+      "id": "9",
+      "name": "arrayAmount1",
+      "type": "currency",
+      "title": "Rate per week",
+      "hint": "Enter rate per week, for example, 9.99"
+    },
+    {
+      "id": "10",
+      "name": "arrayAmount2",
+      "type": "currency",
+      "title": "Total amount",
+      "hint": "Enter total amount, for example, 229.99"
+    },
+    {
+      "id": "11",
+      "name": "orgAgentName",
+      "type": "freetext 100",
+      "title": "Agent name"
+    }
+  ],
+  "organisations": [
+    {
+      "id": "1",
+      "organisationName": "DWP",
+      "emailReplyTo": "no-reply@dwp.gov.uk"
+    }
+  ]
+}

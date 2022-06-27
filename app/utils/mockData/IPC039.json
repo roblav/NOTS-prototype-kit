@@ -1,0 +1,61 @@
+{
+    "templateId": "7",
+    "templateName": "IPCSU309 DATE MOVED COUNTRIES",
+    "templateDescription": "Date moved countries",
+    "language": [
+        "en"
+    ],
+    "templateVersion": 1.0,
+    "isAvailable": true,
+    "channels": [
+        {
+            "channel": "email",
+            "policyOverride": false
+        }
+    ],
+    "placeholders": [
+        {
+          "id": "2",
+          "name": "custTitle",
+          "type": "personTitle",
+          "title": "Title"
+        },
+        {
+          "id": "3",
+          "name": "custFirstName",
+          "type": "freetext 100",
+          "title": "First name"
+        },
+        {
+          "id": "4",
+          "name": "custSurname",
+          "type": "freetext 100",
+          "title": "Last name"
+        },
+        {
+          "id": "5",
+          "name": "newCountry",
+          "type": "freetext 100",
+          "title": "Country name"
+        },
+        {
+          "id": "6",
+          "name": "orgPhone",
+          "type": "freetext 100",
+          "title": "DWP Contact telephone"
+        },
+        {
+          "id": "7",
+          "name": "orgAgentName",
+          "type": "freetext 100",
+          "title": "Agent name"
+        }
+    ],
+    "organisations": [
+        {
+            "id": "1",
+            "organisationName": "DWP",
+            "emailReplyTo": "no-reply@dwp.gov.uk"
+        }
+    ]
+    }

@@ -2,12 +2,6 @@
 
 ## Unreleased
 
-## 12.1.1 (Fix release)
-
-### Fixes
-
-- [#1333: Fix _unchecked falsey value on check your answers page](https://github.com/alphagov/govuk-prototype-kit/pull/1333)
-
 ## 12.1.0 (Feature release)
 
 ### New features

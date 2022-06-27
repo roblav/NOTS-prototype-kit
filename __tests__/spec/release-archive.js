@@ -1,27 +1,25 @@
 /* eslint-env jest */
 
+const childProcess = require('child_process')
 const path = require('path')
 
-const tar = require('tar')
-
-const utils = require('../util')
+const utils = require('./utils')
 
 describe('release archive', () => {
   var archivePath
   var archiveFiles
 
-  beforeAll(async () => {
-    archivePath = await utils.mkReleaseArchive()
+  beforeAll(() => {
+    archivePath = utils.mkReleaseArchiveSync()
 
-    archiveFiles = []
+    console.log(`test release archive saved to ${archivePath}`)
 
-    await tar.list({
-      file: archivePath,
-      onentry: (entry) => {
-        const p = entry.path.substring(path.parse(archivePath).name.length + 1)
-        if (p) { archiveFiles.push(p) }
-      }
-    })
+    archiveFiles = childProcess.execSync(`zipinfo -1 ${archivePath}`, { encoding: 'utf8' })
+      .trim().split('\n').map(
+        p => p.substring(path.parse(archivePath).name.length + 1)
+      ).filter(
+        p => p
+      )
   })
 
   it('contains the prototype kit files', () => {
@@ -49,8 +47,9 @@ describe('release archive', () => {
     expect(archiveFiles).not.toContain('cypress/')
     expect(archiveFiles).not.toContain('cypress.json')
 
-    expect(archiveFiles.filter(p => /.*\.test\.js$/.test(p)))
-      .toEqual([])
+    expect(archiveFiles).not.toContainEqual(
+      expect.stringMatching(/.*\.test\.js$/)
+    )
   })
 
   it('does not contain internal files', () => {

@@ -4,7 +4,7 @@
 
 module.exports = {
   // Service name used in header. Eg: 'Renew your passport'
-  serviceName: 'Service name goes here',
+  serviceName: 'DWP Notifications',
 
   // Default port that prototype runs on
   port: '3000',
@@ -18,6 +18,9 @@ module.exports = {
   // Enable cookie-based session store (persists on restart)
   // Please note 4KB cookie limit per domain, cookies too large will silently be ignored
   useCookieSessionStore: 'false',
+
+  // Enable or disable built-in docs and examples.
+  useDocumentation: 'true',
 
   // Force HTTP to redirect to HTTPS on production
   useHttps: 'true',

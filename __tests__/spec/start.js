@@ -4,7 +4,7 @@ const child_process = require('child_process') // eslint-disable-line camelcase
 const fs = require('fs')
 const path = require('path')
 
-const utils = require('../util')
+const utils = require('./utils')
 
 const repoDir = path.resolve(__dirname, '..', '..')
 
@@ -12,9 +12,9 @@ describe('npm start', () => {
   const tmpDir = utils.mkdtempSync()
 
   describe('prestart', () => {
-    it('checks whether node modules are installed', async () => {
+    it('checks whether node modules are installed', () => {
       const testDir = path.join(tmpDir, 'check-node-modules-exists')
-      await utils.mkPrototype(testDir)
+      utils.mkPrototypeSync(testDir)
 
       expect(
         child_process.execSync('npm start', { cwd: testDir, encoding: 'utf8' })
@@ -25,7 +25,7 @@ describe('npm start', () => {
   describe('dev server', () => {
     it('suggests running npm install if app crashes', async () => {
       const testDir = path.join(tmpDir, 'onCrash')
-      await utils.mkPrototype(testDir)
+      utils.mkPrototypeSync(testDir)
       fs.symlinkSync(path.join(repoDir, 'node_modules'), path.join(testDir, 'node_modules'), 'dir')
 
       // add a require for an unincluded and uninstalled module

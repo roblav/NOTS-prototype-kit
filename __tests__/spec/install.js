@@ -4,14 +4,14 @@ const child_process = require('child_process') // eslint-disable-line camelcase
 const fs = require('fs')
 const path = require('path')
 
-const utils = require('../util')
+const utils = require('./utils')
 
 describe('npm install', () => {
   const tmpDir = utils.mkdtempSync()
 
-  it('does not install dev dependencies by default', async () => {
+  it('does not install dev dependencies by default', () => {
     const testDir = path.join(tmpDir, 'install-no-optional')
-    await utils.mkPrototype(testDir)
+    utils.mkPrototypeSync(testDir)
 
     child_process.execSync(
       'npm install',

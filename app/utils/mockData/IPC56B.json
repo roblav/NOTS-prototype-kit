@@ -1,0 +1,79 @@
+{
+    "templateId": "9",
+    "templateName": "IPC56B & IPCSU117 VOLUNTARY CONTRIBUTIONS ADVICE",
+    "templateDescription": "Advice for Voluntary Contributions",
+    "language": [
+        "en"
+    ],
+    "templateVersion": 1.0,
+    "isAvailable": true,
+    "channels": [
+        {
+            "channel": "email",
+            "policyOverride": false
+        }
+    ],
+    "placeholders": [
+        {
+          "id": "2",
+          "name": "custTitle",
+          "type": "personTitle",
+          "title": "Title"
+        },
+        {
+          "id": "3",
+          "name": "custFirstName",
+          "type": "freetext 100",
+          "title": "First name"
+        },
+        {
+          "id": "4",
+          "name": "custSurname",
+          "type": "freetext 100",
+          "title": "Last name"
+        },
+        {
+          "id": "5",
+          "name": "contactType",
+          "type": "Text",
+          "description": "Type of contact used"
+        },
+        {
+          "id": "6",
+          "name": "date",
+          "type": "Text",
+          "description": "Date which contact was received"
+        },
+        {
+          "id": "7",
+          "name": "dateIncrease",
+          "type": "Text",
+          "description": "Date which pay for tax increases"
+        },
+        {
+          "id": "8",
+          "name": "niDate",
+          "type": "Text",
+          "description": "Date for NI contributions"
+        },
+        {
+          "id": "10",
+          "name": "employmentDate",
+          "type": "Text",
+          "description": "Date of employment start"
+        },
+        {
+          "id": "7",
+          "name": "orgAgentName",
+          "type": "freetext 100",
+          "title": "Agent name"
+        }
+    ],
+    "organisations": [
+        {
+            "id": "1",
+            "organisationName": "DWP",
+            "emailReplyTo": "no-reply@dwp.gov.uk"
+        }
+    ]
+    }

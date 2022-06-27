@@ -10,16 +10,9 @@ msg () {
 
 # Set global vars ARCHIVE_FILE ARCHIVE_ROOT
 get_archive_vars () {
-	# If ARCHIVE_FILE hasn't been set in the env already choose the archive file
-	# in the update folder with the largest version number.
-	if [ -z "${ARCHIVE_FILE:-}" ]; then
-		ARCHIVE_FILE="$(find update -name 'govuk-prototype-kit*.zip' | sort -V | tail -n1)"
-	fi
-	if [ ! -z "${ARCHIVE_FILE:-}" ]; then
-		ARCHIVE_FILE="$PWD/$ARCHIVE_FILE"
-		ARCHIVE_NAME="$(basename "$ARCHIVE_FILE")"
-		ARCHIVE_ROOT="${ARCHIVE_NAME//.zip}"
-	fi
+	# choose the archive file with the largest version number, use this to update from
+	ARCHIVE_FILE="$(find . -name 'govuk-prototype-kit*.zip' -exec basename '{}' ';' | sort -V | tail -n1)"
+	ARCHIVE_ROOT="${ARCHIVE_FILE//.zip}"
 }
 
 # Hide update folder from git
@@ -62,13 +55,6 @@ prepare () {
 
 # Download the latest Prototype Kit release archive to the update folder
 fetch () {
-	get_archive_vars
-
-	# If archive file already exists do nothing
-	if [ -f "$ARCHIVE_FILE" ]; then
-		return
-	fi
-
 	cd update
 
 	if ! ls govuk-prototype-kit*.zip > /dev/null 2>&1; then
@@ -144,9 +130,7 @@ copy () {
 		| xargs -0 -I % cp -v % .
 
 		# copy any new patterns
-		if [ -d "update/app/assets/sass/patterns" ]; then
-		  cp -Rv "update/app/assets/sass/patterns" "app/assets/sass/"
-		fi
+		cp -Rv "update/app/assets/sass/patterns" "app/assets/sass/"
 
 		# copy unbranded layout - needed for the password page
 		cp -v "update/app/views/layout_unbranded.html" "app/views/"
@@ -174,13 +158,6 @@ copy () {
 	update_gitignore
 }
 
-post () {
-  # execute _update_scss if it exists in the update folder
-  if [ -d "update/lib/_update_scss" ]; then
-    node "update/lib/_update_scss"
-  fi
-}
-
 if [ "$0" == "${BASH_SOURCE:-$0}" ]
 then
 	check
@@ -188,5 +165,4 @@ then
 	fetch
 	extract
 	copy
-	post
 fi

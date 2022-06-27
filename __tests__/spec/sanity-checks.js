@@ -45,6 +45,36 @@ describe('The Prototype Kit', () => {
     })
   })
 
+  describe('docs index page', () => {
+    it('should send a well formed response', async () => {
+      const response = await request(app).get('/docs')
+      expect(response.statusCode).toBe(200)
+    })
+
+    it('should return html file', async () => {
+      const response = await request(app).get('/docs')
+      expect(response.type).toBe('text/html')
+    })
+  })
+
+  describe('update script', () => {
+    it('should redirect to GitHub', async () => {
+      const response = await request(app).get('/docs/update.sh')
+      expect(response.statusCode).toBe(302)
+      expect(response.get('location')).toBe('https://raw.githubusercontent.com/alphagov/govuk-prototype-kit/main/update.sh')
+    })
+
+    it('should send a well formed response', async () => {
+      const response = await request(app).get('/docs/update.sh').redirects(1)
+      expect(response.statusCode).toBe(200)
+    })
+
+    it('should return plain text file', async () => {
+      const response = await request(app).get('/docs/update.sh').redirects(1)
+      expect(response.type).toBe('text/plain')
+    })
+  })
+
   describe('extensions', () => {
     it('should allow known assets to be loaded from node_modules', (done) => {
       request(app)
@@ -110,9 +140,9 @@ describe('The Prototype Kit', () => {
     })
   })
 
-  const sassFiles = glob.sync(buildConfig.paths.libAssets + '/sass/*.scss')
+  const sassFiles = glob.sync(buildConfig.paths.assets + '/sass/*.scss')
 
-  describe(`${buildConfig.paths.assets}/sass/`, () => {
+  describe(`${buildConfig.paths.assets}sass/`, () => {
     it.each(sassFiles)('%s renders to CSS without errors', async (file) => {
       return new Promise((resolve, reject) => {
         sass.render({
@@ -127,6 +157,14 @@ describe('The Prototype Kit', () => {
           }
         })
       })
+    })
+  })
+
+  describe('Documentation markdown page titles', () => {
+    const markdownFiles = glob.sync('docs/documentation/**/*.md')
+    it.each(markdownFiles)('%s has a title', (filepath) => {
+      const file = readFile(filepath)
+      utils.getRenderOptions(file, filepath)
     })
   })
 })

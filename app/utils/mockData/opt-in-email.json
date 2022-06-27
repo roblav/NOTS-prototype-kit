@@ -1,0 +1,51 @@
+{
+    "templateId": "EMDOTID00011",
+    "templateName": "OPT-IN EMAIL CONFIRMATION",
+    "templateDescription": "OPT-IN EMAIL CONFIRMATION",
+    "language": ["en"],
+    "templateVersion": 3,
+    "isAvailable": true,
+    "channels": [
+      {
+        "channel": "email",
+        "policyOverride": "false"
+      }
+    ],
+    "placeholders": [
+      {
+        "id": "1",
+        "name": "custTitle",
+        "type": "personTitle",
+        "title": "Title",
+        "hint": "Enter customers title"
+      },
+      {
+        "id": "2",
+        "name": "custFirstName",
+        "type": "string30Chars",
+        "title": "First Name",
+        "hint": "Enter customers first name"
+      },
+      {
+        "id": "3",
+        "name": "custSurname",
+        "type": "string30Chars",
+        "title": "Last Name",
+        "hint": "Enter customers last name"
+      },
+      {
+        "id": "4",
+        "name": "orgAgentName",
+        "type": "string30Chars",
+        "title": "Agent Name",
+        "hint": "Enter agent name"
+      }
+    ],
+    "organisations": [
+      {
+        "id": "OTOUID00001",
+        "organisationName": "International Group",
+        "emailReplyTo": "reply-to-IG@dwp.gov.uk"
+      }
+    ]
+  }

@@ -1,0 +1,60 @@
+{
+  "templateId": "4",
+  "templateName": "CF-N-1175A ANNUAL INCREASE IN BENEFIT",
+  "templateDescription": "Annual benefit increase",
+  "language": ["en"],
+  "templateVersion": 1.0,
+  "isAvailable": true,
+  "channels": [
+    {
+      "channel": "email",
+      "policyOverride": false
+    }
+  ],
+  "placeholders": [
+    {
+      "id": "2",
+      "name": "custTitle",
+      "type": "personTitle",
+      "title": "Title"
+    },
+    {
+      "id": "3",
+      "name": "custFirstName",
+      "type": "freetext 100",
+      "title": "First name"
+    },
+    {
+      "id": "4",
+      "name": "custSurname",
+      "type": "freetext 100",
+      "title": "Last name"
+    },
+    {
+      "id": "5",
+      "name": "amount1",
+      "type": "currency",
+      "title": "Weekly rate"
+    },
+    {
+      "id": "6",
+      "name": "date1",
+      "type": "date",
+      "title": "From date"
+    },
+
+    {
+      "id": "7",
+      "name": "orgAgentName",
+      "type": "freetext 100",
+      "title": "Agent name"
+    }
+  ],
+  "organisations": [
+    {
+      "id": "1",
+      "organisationName": "DWP",
+      "emailReplyTo": "no-reply@dwp.gov.uk"
+    }
+  ]
+}

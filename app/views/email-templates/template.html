@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+
+
+{% block pageTitle %}
+  Home – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block content %}
+
+
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="/">Dashboard</a>
+      </li>
+  
+      <li class="govuk-breadcrumbs__list-item" aria-current="page">Sending new notification</li>
+      
+    </ol>
+  </div>
+
+  <a href="/email-templates/" class="govuk-back-link">Back {{ showErrors }}</a>
+
+  <p><a href="?errors=true" class="govuk-link">Show errors</a></p>
+
+  <div class="govuk-grid-row {% if not showErrors %} hideErrors {% endif %}">
+
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: [
+          {
+            text: "Enter valid title",
+            href: "#2"
+          },
+          {
+            text: "Enter valid name of benefit",
+            href: "#5"
+          }
+        ]
+      }) }}
+      <h1 class="govuk-heading-m">Enter placeholders for '{{templateName}}'</h1>
+
+      <!-- Loop over array of place holder UI components --> 
+      {% for inputObj in optInEmailInputs %}
+        {# {{ inputObj | dump }} #}
+        {% if inputTypes.placeholders[loop.index0] === 'govukInput' %}
+          {{ govukInput(inputObj) }}
+        {% elif inputTypes.placeholders[loop.index0] === 'govukSelect' %}
+          {{ govukSelect(inputObj) }}
+        {% endif %}
+      {% endfor %}
+
+      <!-- Group Table --> 
+
+      {% if groupTablePlaceholders.length %}
+  
+        {% call govukFieldset({
+          classes: "govuk-fieldset--grey",
+          legend: {
+            text: "Group table",
+            classes: "govuk-fieldset__legend--m",
+            isPageHeading: false
+          }
+        }) %}
+
+          {% for inputObj in groupTablePlaceholders %}
+            {# {{ inputObj | dump }} #}
+            {% if inputTypes.groupTable[loop.index0] === 'govukInput' %}
+              {{ govukInput(inputObj) }}
+            {% elif inputTypes.groupTable[loop.index0] === 'govukSelect' %}
+              {{ govukSelect(inputObj) }}
+            {% endif %}
+          {% endfor %}
+
+        {% endcall %}
+
+        <p class="govuk-body">
+          <a class="govuk-link" href="">Remove record</a>
+          <a class="govuk-link" href="" style="margin-left: 1em">Add another record</a>
+        </p>
+
+      {% endif %}
+
+      <div class="govuk-button-group">
+
+        <button class="govuk-button" data-module="govuk-button">
+          Continue
+        </button>
+
+        <span class="govuk-!-margin-right-2"></span>
+        <a href="#cancel-popup" class="govuk-link govuk-body outbound-move-down-8">
+          Cancel
+        </a>
+
+      </div>
+
+    </div>
+    <div class="govuk-grid-column-one-third">
+
+      <div class="govuk-body">
+        <h2 class="govuk-heading-s">Send notification: step by step</h2>
+        <div class="govuk-body outbound-side-nav-heading">
+          Check what you need to do to send a notification to someone
+        </div>
+        <div class="govuk-details__text outbound-side-nav-element outbound-selected-item">
+          <h3 class="govuk-!-font-weight-bold">Select customer</h3>
+          <div class="govuk-hint" style="font-size:15px;margin-right:25px;">
+            Search for a customer via National Insurance number
+          </div>
+        </div>
+        <div class="govuk-details__text outbound-side-nav-element outbound-selected-item">
+          <h3 class="govuk-!-font-weight-bold">Select template</h3>
+          <div class="govuk-hint" style="font-size:15px;margin-right:25px;">
+            Search and select template.
+            <br>
+            Enter the required placeholders.
+          </div>
+        </div>
+        <div class="govuk-details__text outbound-side-nav-element ">
+          <h3 class="govuk-!-font-weight-bold">Summary and preview</h3>
+          <div class="govuk-hint" style="font-size:15px;margin-right:25px;">
+            Check the details entered and preview email
+          </div>
+        </div>
+        <div class="govuk-details__text outbound-side-nav-element ">
+          <h3 class="govuk-!-font-weight-bold">Send</h3>
+          <div class="govuk-hint" style="font-size:15px;margin-right:25px;">
+            Check the preview and 'Send'
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

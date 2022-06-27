@@ -1,0 +1,347 @@
+{% extends "layout.html" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+
+{% block pageTitle %}
+  Home – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block content %}
+
+
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="welcome">Dashboard</a>
+      </li>
+  
+      <li class="govuk-breadcrumbs__list-item" aria-current="page">Sending new notification</li>
+      
+    </ol>
+  </div>
+
+  <a href="/email-templates/" class="govuk-back-link">Back</a>
+
+  <div class="govuk-grid-row">
+
+    <div class="govuk-grid-column-full">
+
+      {{ govukErrorSummary({
+        titleText: "There is a problem",
+        errorList: [
+          {
+            text: "Enter valid title",
+            href: "#2"
+          },
+          {
+            text: "Enter valid name of benefit",
+            href: "#5"
+          }
+        ]
+      }) }}
+      <h1 class="govuk-heading-m">Enter placeholders for '{{templateName}}'</h1>
+
+      <!-- Group table - reepeating values -->
+
+      <form>
+        <table class="govuk-table accessible-table-form">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">
+                From date
+              </th>
+              <th class="govuk-table__header">
+                To date
+              </th>
+              <th class="govuk-table__header">
+                Amount per week
+              </th>
+              <th class="govuk-table__header">
+                Total amount
+              </th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "From date",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "from-Date",
+                  name: "from-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "To date",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "to-Date",
+                  name: "to-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Amount per week",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Amount per week",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "From date",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "from-Date",
+                  name: "from-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "To date",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "to-Date",
+                  name: "to-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Amount per week",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Amount per week",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "From date",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "from-Date",
+                  name: "from-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "To date",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "to-Date",
+                  name: "to-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Amount per week",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Amount per week",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+
+       <h1 class="govuk-heading-m">Enter placeholders for '{{templateName}}'</h1>
+
+             <form>
+        <table class="govuk-table accessible-table-form">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">
+                Tax year
+              </th>
+              <th class="govuk-table__header">
+                Number of contributions
+              </th>
+              <th class="govuk-table__header">
+                Rate of contributions
+              </th>
+              <th class="govuk-table__header">
+                Amount
+              </th>
+              <th class="govuk-table__header">
+                Payment date without penalty
+              </th>
+              <th class="govuk-table__header">
+                Final time limit
+              </th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "Tax year",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "from-Date",
+                  name: "from-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "Number of contributions",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "to-Date",
+                  name: "to-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Rate of contributions",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Amount",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "Payment date without penalty",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "to-Date",
+                  name: "to-Date"
+                }) }}
+              </td>
+              <td class="govuk-table__cell">
+                {{ govukInput({
+                  label: {
+                    text: "Final time limit",
+                    classes: "govuk-label--l govuk-visually-hidden"
+                  },
+                  id: "to-Date",
+                  name: "to-Date"
+                }) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+
+      <div class="govuk-button-group">
+
+        <button class="govuk-button" data-module="govuk-button">
+          Continue
+        </button>
+
+        <span class="govuk-!-margin-right-2"></span>
+        <a href="#cancel-popup" class="govuk-link govuk-body outbound-move-down-8">
+          Cancel
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

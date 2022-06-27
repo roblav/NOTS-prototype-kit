@@ -1,17 +1,13 @@
 /* eslint-env jest */
 const child_process = require('child_process') // eslint-disable-line camelcase
-const fs = require('fs').promises
+const fs = require('fs')
 const path = require('path')
 const process = require('process')
-const { promisify } = require('util')
 
 const _ = require('lodash')
 
-const utils = require('../util')
+const utils = require('./utils')
 const fse = require('fs-extra')
-
-const execPromise = promisify(child_process.exec)
-const execFilePromise = promisify(child_process.execFile)
 
 /*
  * Constants
@@ -31,12 +27,12 @@ const bash = process.platform === 'win32' ? 'C:\\Program Files\\Git\\bin\\bash.e
 /**
  * Run update.sh, or one of the functions defined in it.
  *
- * runScript([fnName][, options])
+ * runScriptSync([fnName][, options])
  *
  * Examples:
- * runScript()  // runs `update.sh` in current working directory
- * runScript({ testDir: 'example' })  // runs `update.sh` in directory `example`
- * runScript('extract', { testDir: 'example' })  // runs `source update.sh && extract` in directory `example`
+ * runScriptSync()  // runs `update.sh` in current working directory
+ * runScriptSync({ testDir: 'example' })  // runs `update.sh` in directory `example`
+ * runScriptSync('extract', { testDir: 'example' })  // runs `source update.sh && extract` in directory `example`
  *
  * Returns an object with output of `stdout`, `stderr`, and exit code in `status`.
  *
@@ -47,7 +43,7 @@ const bash = process.platform === 'win32' ? 'C:\\Program Files\\Git\\bin\\bash.e
  * Throws an error if the spawn fails, but does not throw an error if the
  * return status of the script or function is non-zero.
  */
-async function runScript (fnName = undefined, options) {
+function runScriptSync (fnName = undefined, options) {
   if (typeof fnName === 'object') {
     options = fnName
     fnName = undefined
@@ -73,26 +69,12 @@ async function runScript (fnName = undefined, options) {
     opts.env.PS4 = '+xtrace '
   }
 
-  var ret
-  try {
-    ret = await execFilePromise(bash, args, opts)
-    ret.status = 0
-  } catch (err) {
-    if (err.errno !== undefined) {
-      throw err
-    }
-
-    ret = {
-      status: err.code,
-      stdout: err.stdout,
-      stderr: err.stderr
-    }
-  }
+  const ret = child_process.spawnSync(bash, args, opts)
 
   if (options.trace) {
     // split the trace lines out from stderr
     let { stderr, trace } = _.groupBy(
-      ret.stderr.split(/(\++xtrace [^\n]+)\n/m),
+      ret.stderr.split(/(^\++xtrace [^\n]+)\n/m),
       (line) => /^\++xtrace [^\n]+/.test(line) ? 'trace' : 'stderr'
     )
     stderr = stderr.join('')
@@ -101,46 +83,50 @@ async function runScript (fnName = undefined, options) {
     ret.trace = trace
   }
 
+  if (ret.error) {
+    throw (ret.error)
+  }
+
   return ret
 }
 
-async function runScriptAndExpectSuccess (fnName = undefined, options) {
+function runScriptSyncAndExpectSuccess (fnName = undefined, options) {
   if (typeof fnName === 'object') {
     options = fnName
     fnName = undefined
   }
 
-  const ret = await runScript(fnName, options)
+  const ret = runScriptSync(fnName, options)
   if (ret.status !== 0) {
     throw new Error(`update.sh in ${path.resolve(options.testDir)} failed with status ${ret.status}:\n${ret.stderr}`)
   }
   return ret
 }
 
-async function runScriptAndExpectError (fnName, options) {
+function runScriptSyncAndExpectError (fnName, options) {
   if (typeof fnName === 'object') {
     options = fnName
     fnName = undefined
   }
 
-  const oldStat = await fs.stat(options.testDir)
+  const oldStat = fs.statSync(options.testDir)
 
-  const ret = await runScript(fnName, options)
+  const ret = runScriptSync(fnName, options)
 
   expect(ret.status).not.toBe(0)
   expect(ret.stderr).toMatch(/ERROR/)
 
   // tests that no files have been added or removed in test directory
-  const newStat = await fs.stat(options.testDir)
+  const newStat = fs.statSync(options.testDir)
   expect(newStat.mtimeMs).toBe(oldStat.mtimeMs)
 
   return ret
 }
 
-async function execGitStatus (testDir) {
-  return (await execPromise(
+function execGitStatusSync (testDir) {
+  return child_process.execSync(
     'git status --porcelain', { cwd: testDir, encoding: 'utf8' }
-  )).stdout.split('\n').slice(0, -1)
+  ).split('\n').slice(0, -1)
 }
 
 describe('update.sh', () => {
@@ -154,104 +140,107 @@ describe('update.sh', () => {
    * Fixture helpers
    */
 
-  async function mktestDir (testDir) {
-    await fs.mkdir(testDir)
+  function mktestDirSync (testDir) {
+    fs.mkdirSync(testDir)
 
-    await fs.writeFile(path.join(testDir, 'package.json'), '{\n  "name": "govuk-prototype-kit"\n}')
-    await fs.writeFile(path.join(testDir, 'VERSION.txt'), '0.0.0')
+    fs.writeFileSync(path.join(testDir, 'package.json'), '{\n  "name": "govuk-prototype-kit"\n}')
+    fs.writeFileSync(path.join(testDir, 'VERSION.txt'), '0.0.0')
 
     return testDir
   }
 
   // Create a test archive fixture
-  async function _mktestArchive (archive) {
-    const archivePath = path.parse(archive)
-    const archiveName = archivePath.base
-    const archivePrefix = archivePath.name
-    const dirToArchive = path.join(fixtureDir, archivePrefix)
+  function _mktestArchiveSync (archive) {
+    const archiveName = path.basename(archive)
+    const dirToArchive = path.join(fixtureDir, 'govuk-prototype-kit-foo')
 
-    await fs.mkdir(dirToArchive)
-    await fs.writeFile(path.join(dirToArchive, 'foo'), '')
-    await fs.writeFile(path.join(dirToArchive, 'VERSION.txt'), '9999.99.99')
+    fs.mkdirSync(dirToArchive)
+    fs.writeFileSync(path.join(dirToArchive, 'foo'), '')
+    fs.writeFileSync(path.join(dirToArchive, 'VERSION.txt'), '9999.99.99')
 
     if (process.platform === 'win32') {
-      await execPromise(`7z a ${archiveName} ${archivePrefix}`, { cwd: fixtureDir })
+      child_process.execSync(`7z a ${archiveName} govuk-prototype-kit-foo`, { cwd: fixtureDir })
     } else {
-      await execPromise(`zip -r ${archiveName} ${archivePrefix}`, { cwd: fixtureDir })
+      child_process.execSync(`zip -r ${archiveName} govuk-prototype-kit-foo`, { cwd: fixtureDir })
     }
   }
 
-  async function mktestArchive (testDir) {
-    const archive = path.resolve(fixtureDir, 'govuk-prototype-kit-foo.zip')
+  function mktestArchiveSync (testDir) {
+    const archive = path.resolve(fixtureDir, 'foo.zip')
 
     try {
-      await fs.access(archive)
+      fs.accessSync(archive)
     } catch (error) {
-      await _mktestArchive(archive)
+      _mktestArchiveSync(archive)
     }
 
     if (testDir) {
       const dest = path.join(testDir, 'update', 'govuk-prototype-kit-foo.zip')
-      await fs.mkdir(path.dirname(dest), { recursive: true })
-      await fs.copyFile(archive, path.join(testDir, 'update', 'govuk-prototype-kit-foo.zip'))
+      fs.mkdirSync(path.dirname(dest), { recursive: true })
+      fs.copyFileSync(archive, path.join(testDir, 'update', 'govuk-prototype-kit-foo.zip'))
       return dest
     } else {
       return archive
     }
   }
 
-  async function _mktestPrototype (src) {
+  function _mktestPrototypeSync (src) {
     // Create a release archive from the HEAD we are running tests in
-    await utils.mkPrototype(src)
+    const archivePath = utils.mkReleaseArchiveSync()
+    const releaseDir = path.parse(archivePath).name
+
+    utils.mkPrototypeSync(src)
 
     // Create a git repo from the new release archive so we can see changes.
-    await execFilePromise('git', ['init'], { cwd: src })
-    await execFilePromise('git', ['config', 'user.email', 'test@example.com'], { cwd: src })
-    await execFilePromise('git', ['config', 'user.name', 'Jest Tests'], { cwd: src })
+    child_process.execFileSync('git', ['init'], { cwd: src })
+    child_process.execFileSync('git', ['config', 'user.email', 'test@example.com'], { cwd: src })
+    child_process.execFileSync('git', ['config', 'user.name', 'Jest Tests'], { cwd: src })
 
-    await execFilePromise('git', ['add', '.'], { cwd: src })
-    await execFilePromise('git', ['commit', '-m', 'Initial commit'], { cwd: src })
+    child_process.execFileSync('git', ['add', '.'], { cwd: src })
+    child_process.execFileSync('git', ['commit', '-m', 'Initial commit'], { cwd: src })
 
     // let's imagine our prototype has been customised slightly
-    let config = await fs.readFile(path.join(src, 'app', 'config.js'), 'utf8')
-    config = config.replace('Service name goes here', 'Jest test service')
-    await fs.writeFile(path.join(src, 'app', 'config.js'), config, 'utf8')
+    let config = fs.readFileSync(path.join(src, 'app', 'config.js'), 'utf8')
+    config = config.replace('DWP Notifications', 'Jest test service')
+    fs.writeFileSync(path.join(src, 'app', 'config.js'), config, 'utf8')
 
     // and it has been run
-    await fs.writeFile(path.join(src, 'usage-data-config.json'), '{}')
+    fs.writeFileSync(path.join(src, 'usage-data-config.json'), '{}')
 
-    await execFilePromise('git', ['commit', '-m', 'Test', '-a'], { cwd: src })
+    child_process.execFileSync('git', ['commit', '-m', 'Test', '-a'], { cwd: src })
 
     // populate the update folder to speed up tests
-    await utils.mkPrototype(path.join(src, 'update'))
+    child_process.execSync(`unzip -q ${archivePath}`, { cwd: src })
+    child_process.execSync(`mv ${releaseDir} update`, { cwd: src })
+    fs.copyFileSync(archivePath, path.join(src, 'update', path.basename(archivePath)))
   }
 
-  async function mktestPrototype (dest) {
+  function mktestPrototypeSync (dest) {
     const src = path.resolve(fixtureDir, 'prototype')
     try {
-      await fs.access(src)
+      fs.accessSync(src)
     } catch (error) {
-      await _mktestPrototype(src)
+      _mktestPrototypeSync(src)
     }
 
     if (dest) {
-      await execPromise(`cp -r ${src} ${dest}`)
+      child_process.execSync(`cp -r ${src} ${dest}`)
       return dest
     } else {
       return src
     }
   }
 
-  beforeAll(async () => {
+  beforeAll(() => {
     process.chdir(tmpDir)
     console.log('Running tests in temporary directory', process.cwd())
 
     // setup fixtures
     // - running this now saves time later
     // - ensureDirSync is used to prevent a failure where the fixtureDir already exists from a previous test
-    await fse.ensureDir(fixtureDir)
-    await mktestArchive()
-    await mktestPrototype()
+    fse.ensureDirSync(fixtureDir)
+    mktestArchiveSync()
+    mktestPrototypeSync()
   })
 
   /*
@@ -259,80 +248,80 @@ describe('update.sh', () => {
    */
 
   describe('check', () => {
-    it('exits with error if run in an empty folder', async () => {
+    it('exits with error if run in an empty folder', () => {
       const testDir = 'empty'
-      await fs.mkdir(testDir)
+      fs.mkdirSync(testDir)
 
-      await runScriptAndExpectError({ testDir })
+      runScriptSyncAndExpectError({ testDir })
     })
 
-    it('exits with error if folder does not contain a package.json file', async () => {
+    it('exits with error if folder does not contain a package.json file', () => {
       const testDir = 'no-package-json'
-      await fs.mkdir(testDir)
-      await fs.writeFile(path.join(testDir, 'foo'), 'my important data about govuk-prototype-kit')
-      await fs.writeFile(path.join(testDir, 'bar'), "don't delete my data!")
+      fs.mkdirSync(testDir)
+      fs.writeFileSync(path.join(testDir, 'foo'), 'my important data about govuk-prototype-kit')
+      fs.writeFileSync(path.join(testDir, 'bar'), "don't delete my data!")
 
-      await runScriptAndExpectError({ testDir })
+      runScriptSyncAndExpectError({ testDir })
     })
 
-    it('exits with error if package.json file does not contain string govuk-prototype-kit', async () => {
-      const testDir = await mktestDir('no-govuk-prototype-kit')
-      await fs.writeFile(path.join(testDir, 'package.json'), '{\n  "name": "test"\n}')
+    it('exits with error if package.json file does not contain string govuk-prototype-kit', () => {
+      const testDir = mktestDirSync('no-govuk-prototype-kit')
+      fs.writeFileSync(path.join(testDir, 'package.json'), '{\n  "name": "test"\n}')
 
-      await runScriptAndExpectError({ testDir })
+      runScriptSyncAndExpectError({ testDir })
     })
 
-    it('exits with error if package.json file contains string containing govuk-prototype-kit', async () => {
-      const testDir = await mktestDir('name-contains-govuk-prototype-kit')
-      await fs.writeFile(path.join(testDir, 'package.json'), '{\n  "name": "govuk-prototype-kit-test"\n}')
+    it('exits with error if package.json file contains string containing govuk-prototype-kit', () => {
+      const testDir = mktestDirSync('name-contains-govuk-prototype-kit')
+      fs.writeFileSync(path.join(testDir, 'package.json'), '{\n  "name": "govuk-prototype-kit-test"\n}')
 
-      await runScriptAndExpectError({ testDir })
+      runScriptSyncAndExpectError({ testDir })
     })
   })
 
   describe('prepare', () => {
-    it('removes existing update folder', async () => {
+    it('removes existing update folder', () => {
       const testDir = 'prepare'
-      await fs.mkdir(path.join(testDir, 'update'), { recursive: true })
-      await fs.writeFile(path.join(testDir, 'update', 'govuk-prototype-kit-empty.zip'), '')
-      const oldStat = await fs.stat(path.join(testDir, 'update'))
+      fs.mkdirSync(path.join(testDir, 'update'), { recursive: true })
+      fs.writeFileSync(path.join(testDir, 'update', 'govuk-prototype-kit-empty.zip'), '')
+      const oldStat = fs.statSync(path.join(testDir, 'update'))
 
-      await runScriptAndExpectSuccess('prepare', { testDir })
+      runScriptSyncAndExpectSuccess('prepare', { testDir })
 
-      const newStat = await fs.stat(path.join(testDir, 'update'))
+      const newStat = fs.statSync(path.join(testDir, 'update'))
 
       // tests that update folder _has_ been replaced
       expect(newStat.birthtimeMs).not.toBe(oldStat.birthtimeMs)
-      expect(
-        fs.access(path.join(testDir, 'update', 'govuk-prototype-kit-empty.zip'))
-      ).rejects.toThrow()
+      expect(() => {
+        fs.accessSync(path.join(testDir, 'update', 'govuk-prototype-kit-empty.zip'))
+      }).toThrowError()
     })
 
-    it('does not remove existing update folder if CLEAN=0 is set', async () => {
+    it('does not remove existing update folder if CLEAN=0 is set', () => {
       const testDir = 'prepare-noclean'
-      await fs.mkdir(path.join(testDir, 'update'), { recursive: true })
-      await fs.writeFile(path.join(testDir, 'update', 'govuk-prototype-kit-empty.zip'), '')
-      const oldStat = await fs.stat(path.join(testDir, 'update'))
+      fs.mkdirSync(path.join(testDir, 'update'), { recursive: true })
+      fs.writeFileSync(path.join(testDir, 'update', 'govuk-prototype-kit-empty.zip'), '')
+      const oldStat = fs.statSync(path.join(testDir, 'update'))
 
-      await runScriptAndExpectSuccess('prepare', { testDir, env: { CLEAN: '0' } })
+      runScriptSyncAndExpectSuccess('prepare', { testDir, env: { CLEAN: '0' } })
 
-      const newStat = await fs.stat(path.join(testDir, 'update'))
+      const newStat = fs.statSync(path.join(testDir, 'update'))
 
       // tests that update folder has _not_ been replaced
       expect(newStat.birthtimeMs).toBe(oldStat.birthtimeMs)
-      expect(async () => {
-        await fs.access(path.join(testDir, 'update', 'govuk-prototype-kit-empty.zip'))
+      expect(() => {
+        fs.accessSync(path.join(testDir, 'update', 'govuk-prototype-kit-empty.zip'))
       }).not.toThrowError()
     })
 
-    it('hides the update folder from git', async () => {
+    it('hides the update folder from git', () => {
       const testDir = 'prepare-gitignore'
-      await fs.mkdir(testDir)
+      fs.mkdirSync(testDir)
 
-      await runScriptAndExpectSuccess('prepare', { testDir })
+      runScriptSyncAndExpectSuccess('prepare', { testDir })
 
       expect(
-        (await fs.readFile(path.join(testDir, 'update', '.gitignore'), 'utf8')).trim()
+        fs.readFileSync(path.join(testDir, 'update', '.gitignore'), 'utf8').trim()
       ).toBe('*')
     })
   })
@@ -340,26 +329,26 @@ describe('update.sh', () => {
   describe('fetch', () => {
     it('downloads the latest release of the prototype kit into the update folder', async () => {
       const testDir = 'fetch'
-      await fs.mkdir(path.join(testDir, 'update'), { recursive: true })
+      fs.mkdirSync(path.join(testDir, 'update'), { recursive: true })
 
-      const ret = await runScriptAndExpectSuccess('fetch', { testDir, trace: true })
+      const ret = runScriptSyncAndExpectSuccess('fetch', { testDir, trace: true })
 
       expect(ret.trace).toEqual(expect.arrayContaining([
         expect.stringMatching('curl( -[LJO]*)? https://govuk-prototype-kit.herokuapp.com/docs/download')
       ]))
 
-      expect(await fs.readdir(path.join(testDir, 'update'))).toEqual([
+      expect(fs.readdirSync(path.join(testDir, 'update'))).toEqual([
         expect.stringMatching(/govuk-prototype-kit-\d+\.\d+\.\d+\.zip/)
       ])
     })
   })
 
   describe('extract', () => {
-    it('extracts the release into the update folder', async () => {
+    it('extracts the release into the update folder', () => {
       const testDir = 'extract'
-      await mktestArchive(testDir)
+      mktestArchiveSync(testDir)
 
-      await runScriptAndExpectSuccess('extract', { testDir })
+      runScriptSyncAndExpectSuccess('extract', { testDir })
 
       // note that the extract process should strip 1 leading component from the path,
       // so even though the archive contains:
@@ -368,108 +357,91 @@ describe('update.sh', () => {
       //   - ./foo
       // This is so users don't have to go digging through a complicated
       // directory heirarchy after the script has asked them to manage their config.
-      await fs.access(path.join(testDir, 'update', 'foo'))
-      expect(
-        fs.access(path.join(testDir, 'update', 'govuk-prototype-kit-foo', 'foo'))
-      ).rejects.toThrow()
-    })
-
-    it('extracts the file supplied in ARCHIVE_FILE', async () => {
-      const testDir = 'extractArchiveFile'
-      await fs.mkdir(path.join(testDir, 'update'), { recursive: true })
-
-      const ret = await runScriptAndExpectSuccess(
-        'extract',
-        { testDir, env: { ARCHIVE_FILE: '../__fixtures__/govuk-prototype-kit-foo.zip' }, trace: true }
-      )
-
-      expect(ret.trace).not.toEqual(expect.arrayContaining([
-        expect.stringMatching('curl( -[LJO]*)? https://govuk-prototype-kit.herokuapp.com/docs/download')
-      ]))
-
-      expect(ret.trace).toEqual(expect.arrayContaining([
-        expect.stringMatching('unzip .*/__fixtures__/govuk-prototype-kit-foo.zip')
-      ]))
+      fs.accessSync(path.join(testDir, 'update', 'foo'))
+      expect(() => {
+        fs.accessSync(path.join(testDir, 'update', 'govuk-prototype-kit-foo', 'foo'))
+      }).toThrow()
     })
   })
 
   describe('copy', () => {
-    it('updating an existing up-to-date prototype does nothing', async () => {
-      const testDir = await mktestPrototype('up-to-date')
+    it('updating an existing up-to-date prototype does nothing', () => {
+      const testDir = mktestPrototypeSync('up-to-date')
 
-      await runScriptAndExpectSuccess('copy', { testDir })
+      runScriptSyncAndExpectSuccess('copy', { testDir })
 
       // expect that `git status` reports no files added, changed, or removed
-      expect(await execGitStatus(testDir)).toEqual([])
+      expect(execGitStatusSync(testDir)).toEqual([])
     })
 
-    it('does not remove the analytics consent', async () => {
-      const testDir = await mktestPrototype('usage-data-config')
+    it('does not remove the analytics consent', () => {
+      const testDir = mktestPrototypeSync('usage-data-config')
 
-      const oldStat = await fs.stat(path.join(testDir, 'usage-data-config.json'))
+      const oldStat = fs.statSync(path.join(testDir, 'usage-data-config.json'))
 
-      await runScriptAndExpectSuccess('copy', { testDir })
+      runScriptSyncAndExpectSuccess('copy', { testDir })
 
-      const newStat = await fs.stat(path.join(testDir, 'usage-data-config.json'))
+      const newStat = fs.statSync(path.join(testDir, 'usage-data-config.json'))
       expect(newStat.mtimeMs).toBe(oldStat.mtimeMs)
     })
 
-    it('removes files that have been removed from docs, build and lib folders', async () => {
-      const testDir = await mktestPrototype('remove-dangling-files')
+    it('removes files that have been removed from docs, build and lib folders', () => {
+      const testDir = mktestPrototypeSync('remove-dangling-files')
 
       const updateDir = path.join(testDir, 'update')
-      await fs.unlink(path.join(updateDir, 'lib', 'build', 'config.json'))
-      await fs.unlink(path.join(updateDir, 'lib', 'v6', 'govuk_template_unbranded.html'))
-      await fs.rmdir(path.join(updateDir, 'lib', 'v6'))
+      fs.unlinkSync(path.join(updateDir, 'lib', 'build', 'config.json'))
+      fs.unlinkSync(path.join(updateDir, 'docs', 'documentation', 'session.md'))
+      fs.unlinkSync(path.join(updateDir, 'lib', 'v6', 'govuk_template_unbranded.html'))
+      fs.rmdirSync(path.join(updateDir, 'lib', 'v6'))
 
-      await runScriptAndExpectSuccess('copy', { testDir })
+      runScriptSyncAndExpectSuccess('copy', { testDir })
 
-      expect(await execGitStatus(testDir)).toEqual([
+      expect(execGitStatusSync(testDir)).toEqual([
+        ' D docs/documentation/session.md',
         ' D lib/build/config.json',
         ' D lib/v6/govuk_template_unbranded.html'
       ])
     })
 
-    it('removes gulp files and adds build files if the release does not contain gulp', async () => {
-      const testDir = await mktestPrototype('remove-gulp-files')
+    it('removes gulp files and adds build files if the release does not contain gulp', () => {
+      const testDir = mktestPrototypeSync('remove-gulp-files')
 
-      await fs.mkdir(path.join(testDir, 'gulp'))
-      await fs.writeFile(path.join(testDir, 'gulp', 'watch.js'), 'foo')
-      await fs.writeFile(path.join(testDir, 'gulpfile.js'), 'bar')
-      await execPromise('git add gulp/watch.js gulpfile.js', { cwd: testDir })
-      await execPromise('git rm -r lib/build', { cwd: testDir })
-      await execPromise('git commit -q -m "Ensure gulp files exist"', { cwd: testDir })
+      fs.mkdirSync(path.join(testDir, 'gulp'))
+      fs.writeFileSync(path.join(testDir, 'gulp', 'watch.js'), 'foo')
+      fs.writeFileSync(path.join(testDir, 'gulpfile.js'), 'bar')
+      child_process.execSync('git add gulp/watch.js gulpfile.js', { cwd: testDir })
+      child_process.execSync('git rm -r lib/build', { cwd: testDir })
+      child_process.execSync('git commit -q -m "Ensure gulp files exist"', { cwd: testDir })
 
-      await runScriptAndExpectSuccess('copy', { testDir })
+      runScriptSyncAndExpectSuccess('copy', { testDir })
 
-      expect(await execGitStatus(testDir)).toEqual([
+      expect(execGitStatusSync(testDir)).toEqual([
         ' D gulp/watch.js',
         ' D gulpfile.js',
         '?? lib/build/'
       ])
     })
 
-    it('does not change files in apps folder, except for in assets/sass/patterns', async () => {
-      const testDir = await mktestPrototype('preserve-app-folder')
+    it('does not change files in apps folder, except for in assets/sass/patterns', () => {
+      const testDir = mktestPrototypeSync('preserve-app-folder')
 
       const updateDir = path.join(testDir, 'update')
-      await fs.mkdir(path.join(updateDir, 'app', 'assets', 'sass', 'patterns'))
-      await fs.writeFile(path.join(updateDir, 'app', 'assets', 'sass', 'patterns', '_task-list.scss'), 'foobar')
-      await fs.writeFile(path.join(updateDir, 'app', 'routes.js'), 'arglebargle')
+      fs.writeFileSync(path.join(updateDir, 'app', 'assets', 'sass', 'patterns', '_task-list.scss'), 'foobar')
+      fs.writeFileSync(path.join(updateDir, 'app', 'routes.js'), 'arglebargle')
 
-      await runScriptAndExpectSuccess('copy', { testDir })
+      runScriptSyncAndExpectSuccess('copy', { testDir })
 
-      expect(await execGitStatus(testDir)).toEqual([
-        '?? app/assets/sass/patterns/'
+      expect(execGitStatusSync(testDir)).toEqual([
+        ' M app/assets/sass/patterns/_task-list.scss'
       ])
     })
 
-    it('outputs errors and logs them to a file', async () => {
-      const testDir = await mktestDir('error-logging')
-      await mktestArchive(testDir)
+    it('it outputs errors and logs them to a file', () => {
+      const testDir = mktestDirSync('error-logging')
+      mktestArchiveSync(testDir)
 
-      await runScriptAndExpectSuccess('extract', { testDir })
-      const ret = await runScript('copy', { testDir })
+      runScriptSyncAndExpectSuccess('extract', { testDir })
+      const ret = runScriptSync('copy', { testDir })
 
       // we expect this to fail because the test archive doesn't have a docs folder
       expect(ret.status).toBe(1)
@@ -477,45 +449,45 @@ describe('update.sh', () => {
       expect(ret.stderr).toMatch(/No such file or directory/)
       expect(ret.stderr).toMatch(/ERROR/)
       expect(
-        await fs.readFile(path.join(testDir, 'update', 'update.log'), 'utf8')
+        fs.readFileSync(path.join(testDir, 'update', 'update.log'), 'utf8')
       ).toMatch(/No such file or directory/)
     })
 
-    it('hides the update folder from git', async () => {
-      const testDir = await mktestPrototype('copy-gitignore')
+    it('hides the update folder from git', () => {
+      const testDir = mktestPrototypeSync('copy-gitignore')
 
-      await runScriptAndExpectSuccess('copy', { testDir })
+      runScriptSyncAndExpectSuccess('copy', { testDir })
 
       expect(
-        (await fs.readFile(path.join(testDir, 'update', '.gitignore'), 'utf8')).trim()
+        fs.readFileSync(path.join(testDir, 'update', '.gitignore'), 'utf8').trim()
       ).toBe('*')
     })
   })
 
-  it('can be run as a piped script', async () => {
-    const testDir = await mktestPrototype('pipe')
+  it('can be run as a piped script', () => {
+    const testDir = mktestPrototypeSync('pipe')
 
-    execPromise(`cat '${script}' | bash`, { cwd: testDir, shell: bash, stdio: 'ignore' })
+    child_process.execSync(`cat '${script}' | bash`, { cwd: testDir, shell: bash, stdio: 'ignore' })
   })
 
-  it('hides the update folder from git', async () => {
-    const testDir = await mktestPrototype('gitignore')
+  it('hides the update folder from git', () => {
+    const testDir = mktestPrototypeSync('gitignore')
 
-    await runScriptAndExpectSuccess({ testDir })
+    runScriptSyncAndExpectSuccess({ testDir })
 
-    expect(await execGitStatus(testDir)).not.toContain('?? update/')
+    expect(execGitStatusSync(testDir)).not.toContain('?? update/')
   })
 
-  it('does nothing if check fails', async () => {
-    const testDir = await mktestPrototype('if-check-fails')
-    await execPromise('rm -rf update', { cwd: testDir })
+  it('does nothing if check fails', () => {
+    const testDir = mktestPrototypeSync('if-check-fails')
+    child_process.execSync('rm -rf update', { cwd: testDir })
 
-    await fs.writeFile(path.join(testDir, 'package.json'), '{\n  "name": "my-very-customised-prototype" \n}')
-    await execPromise('git commit -q -m "Customise my prototype" -a', { cwd: testDir })
+    fs.writeFileSync(path.join(testDir, 'package.json'), '{\n  "name": "my-very-customised-prototype" \n}')
+    child_process.execSync('git commit -q -m "Customise my prototype" -a', { cwd: testDir })
 
-    await runScriptAndExpectError({ testDir })
+    runScriptSyncAndExpectError({ testDir })
 
-    expect(await execGitStatus(testDir)).toEqual([])
+    expect(execGitStatusSync(testDir)).toEqual([])
   })
 
   afterAll(() => {
