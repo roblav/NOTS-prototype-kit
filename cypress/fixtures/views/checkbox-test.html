@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+
+<h1 class="govuk-heading-xl">Checkbox tests</h1>
+
+    {{ govukCheckboxes({
+        idPrefix: "vehicle-features",
+        name: "vehicle-features",
+        fieldset: {
+            legend: {
+                text: "Which of these applies to your vehicle?"
+            }
+        },
+        hint: {
+            text: "Select all that apply"
+        },
+        items: [
+            {
+                value: "Heated seats",
+                text: "Heated seats",
+                checked: checked("vehicle-features", "Heated seats")
+            },
+            {
+                value: "GPS",
+                text: "GPS",
+                checked: checked("vehicle-features", "GPS")
+            },
+            {
+                value: "Radio",
+                text: "Radio",
+                checked: checked("vehicle-features", "Radio")
+            }
+        ]
+    }) }}
+{% endblock %}
