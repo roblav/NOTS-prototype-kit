@@ -27,7 +27,7 @@
 
   <div class="govuk-grid-row">
 
-    <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
 
       {{ govukErrorSummary({
         titleText: "There is a problem",
@@ -47,280 +47,264 @@
       <!-- Group table - reepeating values -->
 
       <form>
-        <table class="govuk-table accessible-table-form">
+        <table class="govuk-table responsive-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <th class="govuk-table__header">
+              <th class="govuk-table__header" scope="col">
                 From date
               </th>
-              <th class="govuk-table__header">
+              <th class="govuk-table__header" scope="col">
                 To date
               </th>
-              <th class="govuk-table__header">
+              <th class="govuk-table__header" scope="col">
+                Number of weeks
+              </th>
+              <th class="govuk-table__header" scope="col">
                 Amount per week
               </th>
-              <th class="govuk-table__header">
+              <th class="govuk-table__header" scope="col">
                 Total amount
               </th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">
+            <tr class="govuk-table__row" role="row">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   label: {
                     text: "From date",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   id: "from-Date",
                   name: "from-Date"
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   label: {
                     text: "To date",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   id: "to-Date",
                   name: "to-Date"
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Number of weeks",
+                    classes: "govuk-label--s responsive-table__heading"
+                  }
+                }) }}
+              </td>
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   id: "cost",
                   name: "cost",
                   label: {
                     text: "Amount per week",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   prefix: {
                     text: "£"
                   },
-                  classes: "govuk-input--width-5",
                   spellcheck: false
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   id: "cost",
                   name: "cost",
                   label: {
                     text: "Amount per week",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   prefix: {
                     text: "£"
                   },
-                  classes: "govuk-input--width-5",
                   spellcheck: false
                 }) }}
               </td>
             </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">
+            <tr class="govuk-table__row" role="row">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   label: {
                     text: "From date",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   id: "from-Date",
                   name: "from-Date"
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   label: {
                     text: "To date",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   id: "to-Date",
                   name: "to-Date"
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Number of weeks",
+                    classes: "govuk-label--s responsive-table__heading"
+                  }
+                }) }}
+              </td>
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   id: "cost",
                   name: "cost",
                   label: {
                     text: "Amount per week",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   prefix: {
                     text: "£"
                   },
-                  classes: "govuk-input--width-5",
                   spellcheck: false
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   id: "cost",
                   name: "cost",
                   label: {
                     text: "Amount per week",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   prefix: {
                     text: "£"
                   },
-                  classes: "govuk-input--width-5",
                   spellcheck: false
                 }) }}
               </td>
             </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">
+            <tr class="govuk-table__row" role="row">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   label: {
                     text: "From date",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   id: "from-Date",
                   name: "from-Date"
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   label: {
                     text: "To date",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   id: "to-Date",
                   name: "to-Date"
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
+                {{ govukInput({
+                  id: "cost",
+                  name: "cost",
+                  label: {
+                    text: "Number of weeks",
+                    classes: "govuk-label--s responsive-table__heading"
+                  }
+                }) }}
+              </td>
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   id: "cost",
                   name: "cost",
                   label: {
                     text: "Amount per week",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   prefix: {
                     text: "£"
                   },
-                  classes: "govuk-input--width-5",
                   spellcheck: false
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   id: "cost",
                   name: "cost",
                   label: {
                     text: "Amount per week",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   prefix: {
                     text: "£"
                   },
-                  classes: "govuk-input--width-5",
                   spellcheck: false
                 }) }}
               </td>
             </tr>
-          </tbody>
-        </table>
-      </form>
-
-       <h1 class="govuk-heading-m">Enter placeholders for '{{templateName}}'</h1>
-
-             <form>
-        <table class="govuk-table accessible-table-form">
-          <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <th class="govuk-table__header">
-                Tax year
-              </th>
-              <th class="govuk-table__header">
-                Number of contributions
-              </th>
-              <th class="govuk-table__header">
-                Rate of contributions
-              </th>
-              <th class="govuk-table__header">
-                Amount
-              </th>
-              <th class="govuk-table__header">
-                Payment date without penalty
-              </th>
-              <th class="govuk-table__header">
-                Final time limit
-              </th>
-            </tr>
-          </thead>
-          <tbody class="govuk-table__body">
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">
+            <tr class="govuk-table__row" role="row">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   label: {
-                    text: "Tax year",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    text: "From date",
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   id: "from-Date",
                   name: "from-Date"
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   label: {
-                    text: "Number of contributions",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    text: "To date",
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   id: "to-Date",
                   name: "to-Date"
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   id: "cost",
                   name: "cost",
                   label: {
-                    text: "Rate of contributions",
-                    classes: "govuk-label--l govuk-visually-hidden"
-                  },
-                  prefix: {
-                    text: "£"
-                  },
-                  classes: "govuk-input--width-5",
-                  spellcheck: false
+                    text: "Number of weeks",
+                    classes: "govuk-label--s responsive-table__heading"
+                  }
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
                   id: "cost",
                   name: "cost",
                   label: {
-                    text: "Amount",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    text: "Amount per week",
+                    classes: "govuk-label--s responsive-table__heading"
                   },
                   prefix: {
                     text: "£"
                   },
-                  classes: "govuk-input--width-5",
                   spellcheck: false
                 }) }}
               </td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell" role="cell">
                 {{ govukInput({
+                  id: "cost",
+                  name: "cost",
                   label: {
-                    text: "Payment date without penalty",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                    text: "Amount per week",
+                    classes: "govuk-label--s responsive-table__heading"
                   },
-                  id: "to-Date",
-                  name: "to-Date"
-                }) }}
-              </td>
-              <td class="govuk-table__cell">
-                {{ govukInput({
-                  label: {
-                    text: "Final time limit",
-                    classes: "govuk-label--l govuk-visually-hidden"
+                  prefix: {
+                    text: "£"
                   },
-                  id: "to-Date",
-                  name: "to-Date"
+                  spellcheck: false
                 }) }}
               </td>
             </tr>

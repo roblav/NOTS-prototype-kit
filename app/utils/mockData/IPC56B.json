@@ -23,8 +23,9 @@
         {
           "id": "3",
           "name": "custFirstName",
-          "type": "freetext 100",
-          "title": "First name"
+          "type": "Free Text - Medium",
+          "title": "First name",
+          "description": "First name must be 30 characters or less"
         },
         {
           "id": "4",

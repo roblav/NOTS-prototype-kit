@@ -51,3 +51,205 @@ $govuk-assets-path: "/govuk/assets/";
 //     border: 1px solid;
 //   }
 // }
+
+// .responsive-table {
+//   margin-bottom: 0;
+//   width: 100%;
+//   thead {
+//     border: 0;
+//     clip: rect(0 0 0 0);
+//     -webkit-clip-path: inset(50%);
+//     clip-path: inset(50%);
+//     height: 1px;
+//     margin: 0;
+//     overflow: hidden;
+//     padding: 0;
+//     position: absolute;
+//     white-space: nowrap;
+//     width: 1px;
+//   }
+  
+//   tbody tr {
+//     display: block;
+//     margin-bottom: 1.5em;
+//     padding: 0 0.5em;
+//   }
+  
+//   @media (min-width: 769px) {
+//     tbody tr {
+//       display: table-row;
+//     }
+//   }
+//   tbody tr td {
+//     display: flex;
+//     justify-content: space-between;
+//     min-width: 1px;
+//     text-align: right;
+//   }
+  
+//   @media (max-width: 768px) {
+//     tbody tr td {
+//       padding-right: 0;
+//     }
+//     tbody tr td:last-child {
+//       border-bottom: 0
+//     }
+//     tbody tr {
+//       border-bottom: 3px solid grey;
+//     }
+//   }
+  
+//   @media (min-width: 769px) {
+//     tbody tr td {
+//       display: table-cell;
+//       text-align: left;
+//     }
+//   }
+//   .responsive-table__heading {
+//     font-weight: 700;
+//     padding-right: 1em;
+//     text-align: left;
+//     word-break: initial;
+//   }
+//   @media (min-width: 769px) {
+//     .responsive-table__heading {
+//       display: none;
+//     }
+//   }
+//   .responsive-table__heading {
+//     font-weight: 700;
+//     padding-right: 1em;
+//     text-align: left;
+//     word-break: initial;
+//   }
+//   @media (min-width: 769px) {
+//     .responsive-table__heading {
+//       display: none;
+//     }
+//   }
+// }
+
+// /* Standard table styling, change as desired */
+// table {
+//   border-collapse: collapse;
+//   border-spacing: 0;
+// }
+  
+// caption { 
+//   font-size: 24px;
+//   font-weight: 700;
+//   text-align: left;
+// }
+  
+// th {
+//   border-bottom: 1px solid #bfc1c3;
+//   font-size: 19px;
+//   padding: 0.5em 1em 0.5em 0;
+//   text-align: left;
+// }
+  
+// td {
+//   border-bottom: 1px solid #bfc1c3;
+//   font-size: 19px;
+//   padding: 0.5em 1em 0.5em 0;
+// }
+
+/* Responsive table styling */
+.responsive-table { 
+  margin-bottom: 0;
+  width: 100%;
+
+  thead {
+    border: 0;
+    clip: rect(0 0 0 0);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  tbody tr {
+    display: block;
+    margin-bottom: 1.5em;
+    padding: 0 0.5em;
+  }
+
+  tbody tr td {
+    display: block;
+    // justify-content: space-between;
+    min-width: 1px;
+    text-align: right;
+  }
+
+  tbody tr td .govuk-form-group {
+    display: block; /* browsers that don't support flex */
+    display: flex;
+    justify-content: flex-start;
+    min-width: 1px;
+    text-align: right;
+    margin-bottom: 0px;
+  }
+
+  @media all and (-ms-high-contrast: none) { /* IE11 flex fix */
+    tbody tr td .govuk-form-group {
+      display: block;
+    }
+  }
+
+  .responsive-table__heading {
+    font-weight: 700;
+    padding-right: 1em;
+    text-align: left;
+    word-break: initial;
+    min-width: 150px;
+  }
+
+  @media (max-width: 768px) {
+    tbody tr td {
+      padding-right: 0;
+    }
+    tbody tr td:last-child {
+      border-bottom: 0;
+    }
+    tbody tr {
+      border-bottom: 3px solid grey;
+    }
+  }
+
+  @media (min-width: 769px) {
+    thead {
+      clip: auto;
+      -webkit-clip-path: none;
+      clip-path: none;
+      display: table-header-group;
+      height: auto;
+      overflow: auto;
+      position: relative;
+      width: auto;
+    }
+    
+    tbody tr {
+      display: table-row;
+    }
+
+    tbody tr td {
+      display: table-cell;
+      text-align: left;
+    }
+    
+    tbody tr td .govuk-form-group {
+      display: table-cell;
+      text-align: left;
+    }
+    
+    .responsive-table__heading {
+      display: none;
+    }
+  }
+
+}
