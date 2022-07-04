@@ -15,41 +15,24 @@
     ],
     "placeholders": [
         {
-          "id": "2",
-          "name": "custTitle",
-          "type": "personTitle",
-          "title": "Title"
-        },
-        {
-          "id": "3",
-          "name": "custFirstName",
-          "type": "freetext 100",
-          "title": "First name"
-        },
-        {
-          "id": "4",
-          "name": "custSurname",
-          "type": "freetext 100",
-          "title": "Last name"
-        },
-        {
-            "id": "5",
+            "id": "1",
             "name": "date1",
-            "type": "date",
+            "type": "Date",
             "title": "Award date"
         },
         {
-            "id": "6",
+            "id": "2",
             "name": "amount1",
-            "type": "currency",
+            "type": "Number with decimal",
             "title": "Weekly amount",
-            "hint": "Enter weekly amount, for example, 9.99"
+            "description": "For example, 49.99"
         },
         {
-            "id": "7",
+            "id": "3",
             "name": "orgAgentName",
-            "type": "freetext 100",
-            "title": "Agent name"
+            "type": "Free Text - Long",
+            "title": "Agent name",
+            "description": "Agent name must be 100 characters or less"
         }
     ],
     "organisations": [

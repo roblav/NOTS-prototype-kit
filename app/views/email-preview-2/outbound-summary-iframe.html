@@ -9,6 +9,20 @@
 
 <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
 
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="welcome">Dashboard</a>
+      </li>
+  
+      <li class="govuk-breadcrumbs__list-item" aria-current="page">Sending new notification</li>
+      
+    </ol>
+  </div>
+
+  <a href="/" class="govuk-back-link">Back</a>
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">  
       <h1 class="govuk-heading-xl">
@@ -21,13 +35,15 @@
         </a> for better readibility.
       </p>
 
-      <div>
+
+      <canvas id="the-canvas" style="border: #ddd 1px solid; margin-bottom: 1em;"></canvas>
+
+      <div style="margin-bottom: 2em;">
         <button id="prev">Previous</button>
         <button id="next">Next</button>
         &nbsp; &nbsp;
         <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
       </div>
-        <canvas id="the-canvas"></canvas>
 
       <div class="govuk-button-group">
         <button class="govuk-button" data-module="govuk-button">
@@ -97,7 +113,7 @@ var pdfDoc = null,
     pageNum = 1,
     pageRendering = false,
     pageNumPending = null,
-    scale = 0.8,
+    scale = 1,
     canvas = document.getElementById('the-canvas'),
     ctx = canvas.getContext('2d');
 

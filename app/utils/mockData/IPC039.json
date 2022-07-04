@@ -1,6 +1,6 @@
 {
     "templateId": "7",
-    "templateName": "IPCSU309 DATE MOVED COUNTRIES",
+    "templateName": "IPC039 Further Information to Support SP Award",
     "templateDescription": "Date moved countries",
     "language": [
         "en"
@@ -15,40 +15,23 @@
     ],
     "placeholders": [
         {
-          "id": "2",
-          "name": "custTitle",
-          "type": "personTitle",
-          "title": "Title"
-        },
-        {
-          "id": "3",
-          "name": "custFirstName",
-          "type": "freetext 100",
-          "title": "First name"
-        },
-        {
-          "id": "4",
-          "name": "custSurname",
-          "type": "freetext 100",
-          "title": "Last name"
-        },
-        {
-          "id": "5",
+          "id": "1",
           "name": "newCountry",
-          "type": "freetext 100",
+          "type": "Free Text - Long",
           "title": "Country name"
         },
         {
-          "id": "6",
+          "id": "2",
           "name": "orgPhone",
-          "type": "freetext 100",
+          "type": "Telephone Number",
           "title": "DWP Contact telephone"
         },
         {
-          "id": "7",
+          "id": "3",
           "name": "orgAgentName",
-          "type": "freetext 100",
-          "title": "Agent name"
+          "type": "Free Text - Long",
+          "title": "Agent name",
+          "description": "Agent name must be 100 characters or less"
         }
     ],
     "organisations": [

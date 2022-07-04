@@ -26,7 +26,7 @@ function govInput(templatePlaceholder) {
       classes: 'govuk-label govuk-label--s govuk-!-margin-bottom-2'
     },
     hint: {
-      text: templatePlaceholder.hint
+      text: templatePlaceholder.description
     },
     attributes: {
       placeholder: templatePlaceholder.placeholder
@@ -104,9 +104,14 @@ const templateTypeMap = {
   'string100Chars': 'govukInput',
   'freetext 100': 'govukInput',
   'date': 'govukInput',
+  'Date': 'govukInput',
   'Text': 'govukInput',
   'currency': 'govukInput',
   'whole number': 'govukInput',
+  'Free Text - Medium': 'govukInput',
+  'Free Text - Long': 'govukInput',
+  'Number with decimal': 'govukInput',
+  'Telephone Number': 'govukInput',
 };
 
 function inputTypeBuilder(templatePlaceholders) {

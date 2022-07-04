@@ -1,6 +1,6 @@
 {
     "templateId": "7",
-    "templateName": "IPCSU309 DATE MOVED COUNTRIES",
+    "templateName": "IPCSU309 Date Moved Countries",
     "templateDescription": "Date moved countries",
     "language": [
         "en"
@@ -15,40 +15,17 @@
     ],
     "placeholders": [
         {
+            "id": "1",
+            "name": "date1",
+            "type": "dd/mm/yyyy, dd/mm/yy, today",
+            "title": "Date required for return"
+        },
+        {
           "id": "2",
-          "name": "custTitle",
-          "type": "personTitle",
-          "title": "Title"
-        },
-        {
-          "id": "3",
-          "name": "custFirstName",
-          "type": "freetext 100",
-          "title": "First name"
-        },
-        {
-          "id": "4",
-          "name": "custSurname",
-          "type": "freetext 100",
-          "title": "Last name"
-        },
-        {
-          "id": "5",
-          "name": "newCountry",
-          "type": "freetext 100",
-          "title": "Country name"
-        },
-        {
-          "id": "6",
-          "name": "orgPhone",
-          "type": "freetext 100",
-          "title": "DWP Contact telephone"
-        },
-        {
-          "id": "7",
           "name": "orgAgentName",
-          "type": "freetext 100",
-          "title": "Agent name"
+          "type": "Free Text - Long",
+          "title": "Agent name",
+          "description": "Agent name must be 100 characters or less"
         }
     ],
     "organisations": [

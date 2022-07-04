@@ -15,59 +15,41 @@
     ],
     "placeholders": [
         {
-          "id": "2",
-          "name": "custTitle",
-          "type": "personTitle",
-          "title": "Title"
-        },
-        {
-          "id": "3",
-          "name": "custFirstName",
-          "type": "Free Text - Medium",
-          "title": "First name",
-          "description": "First name must be 30 characters or less"
-        },
-        {
-          "id": "4",
-          "name": "custSurname",
-          "type": "freetext 100",
-          "title": "Last name"
-        },
-        {
           "id": "5",
           "name": "contactType",
-          "type": "Text",
-          "description": "Type of contact used"
+          "type": "Free Text - Medium",
+          "title": "Type of contact used"
         },
         {
           "id": "6",
           "name": "date",
-          "type": "Text",
-          "description": "Date which contact was received"
+          "type": "Date",
+          "title": "Date which contact was received"
         },
         {
           "id": "7",
           "name": "dateIncrease",
-          "type": "Text",
-          "description": "Date which pay for tax increases"
+          "type": "Date",
+          "title": "Date which pay for tax increases"
         },
         {
           "id": "8",
           "name": "niDate",
-          "type": "Text",
-          "description": "Date for NI contributions"
+          "type": "Date",
+          "title": "Date for NI contributions"
         },
         {
           "id": "10",
           "name": "employmentDate",
-          "type": "Text",
-          "description": "Date of employment start"
+          "type": "Date",
+          "title": "Date of employment start"
         },
         {
-          "id": "7",
+          "id": "3",
           "name": "orgAgentName",
-          "type": "freetext 100",
-          "title": "Agent name"
+          "type": "Free Text - Long",
+          "title": "Agent name",
+          "description": "Agent name must be 100 characters or less"
         }
     ],
     "organisations": [
